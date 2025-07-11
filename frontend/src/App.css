@@ -21,7 +21,8 @@
   overflow-y: auto;
   margin-bottom: 20px;
   padding: 10px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-history p {
@@ -29,22 +30,24 @@
   padding: 5px 10px;
   border-radius: 5px;
   margin: 0; /* Removed all margins */
+  max-width: 100%; /* Allow text to take full width of message container */
 }
 
 .message-container {
   margin-bottom: 5px; /* Space between messages */
   padding: 5px 12px; /* Padding for the message bubble */
   border-radius: 8px;
+  max-width: 70%; /* Limit message width */
 }
 
 .user-message {
   background-color: #3a3f47; /* User message background */
-  text-align: right;
+  align-self: flex-end; /* Aligns the entire message bubble to the right */
 }
 
 .bot-message {
   background-color: #282c34; /* Bot message background (same as chat history) */
-  text-align: left;
+  align-self: flex-start; /* Keeps the entire message bubble to the left */
 }
 
 .chat-input {

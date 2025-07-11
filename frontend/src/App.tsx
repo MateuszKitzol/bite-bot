@@ -35,11 +35,11 @@ function App() {
         <div className="chat-history" ref={chatHistoryRef}>
           {chatHistory.map((chat, index) => (
             <React.Fragment key={index}>
-              <div className="message-container">
-                <p className="user-message">{chat.user}</p>
+              <div className="message-container user-message">
+                <p>{chat.user}</p>
               </div>
-              <div className="message-container">
-                <p className="bot-message">{chat.bot}</p>
+              <div className="message-container bot-message">
+                <p>{chat.bot}</p>
               </div>
             </React.Fragment>
           ))}
