@@ -15,12 +15,35 @@
 
 .chat-history {
   width: 80%;
-  max-width: 600px;
-  height: 400px;
-  border: 1px solid #ccc;
+  max-width: 900px;
+  height: 600px;
+  border: none;
   overflow-y: auto;
   margin-bottom: 20px;
   padding: 10px;
+  text-align: left;
+}
+
+.chat-history p {
+  font-size: 0.8em;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 0; /* Removed all margins */
+}
+
+.message-container {
+  margin-bottom: 5px; /* Space between messages */
+  padding: 5px 12px; /* Padding for the message bubble */
+  border-radius: 8px;
+}
+
+.user-message {
+  background-color: #3a3f47; /* User message background */
+  text-align: right;
+}
+
+.bot-message {
+  background-color: #282c34; /* Bot message background (same as chat history) */
   text-align: left;
 }
 
@@ -31,16 +54,39 @@
 .chat-input input {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 5px 0 0 5px;
+  color: initial;
+  background-color: initial;
 }
 
 .chat-input button {
   padding: 10px 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-left: none;
   background-color: #61dafb;
   color: #282c34;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
+}
+
+/* WebKit (Chrome, Safari, Edge) scrollbar styling */
+.chat-history::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+  background: #282c34; /* Same as header background */
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+  background-color: #555; /* Darker gray, similar to border */
+  border-radius: 4px;
+  border: 2px solid #282c34; /* Border to match track background */
+}
+
+/* Firefox scrollbar styling */
+.chat-history {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: #555 #282c34; /* thumb color track color */
 }

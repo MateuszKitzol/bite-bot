@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<{ user: string; bot: string }[]>([]);
+  const chatHistoryRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
     if (!message) return;
@@ -21,16 +22,26 @@ function App() {
     setMessage('');
   };
 
+  useEffect(() => {
+    if (chatHistoryRef.current) {
+      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Chatbot</h1>
-        <div className="chat-history">
+        <div className="chat-history" ref={chatHistoryRef}>
           {chatHistory.map((chat, index) => (
-            <div key={index}>
-              <p><strong>You:</strong> {chat.user}</p>
-              <p><strong>Bot:</strong> {chat.bot}</p>
-            </div>
+            <React.Fragment key={index}>
+              <div className="message-container">
+                <p className="user-message">{chat.user}</p>
+              </div>
+              <div className="message-container">
+                <p className="bot-message">{chat.bot}</p>
+              </div>
+            </React.Fragment>
           ))}
         </div>
         <div className="chat-input">
