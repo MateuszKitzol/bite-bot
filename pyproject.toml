@@ -1,0 +1,9 @@
+[project]
+name = "custom_chatbot"
+version = "0.1.0"
+dependencies = [
+    "fastapi",
+    "langchain",
+    "python-dotenv",
+    "uvicorn"
+]
