@@ -52,23 +52,28 @@
 
 .chat-input {
   display: flex;
+  width: 80%;
+  max-width: 900px;
 }
 
 .chat-input input {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #555;
+  border: none;
   border-radius: 5px 0 0 5px;
-  color: initial;
-  background-color: initial;
+  color: white;
+  background-color: #3a3f47;
+}
+
+.chat-input input:focus {
+  outline: none;
 }
 
 .chat-input button {
   padding: 10px 20px;
-  border: 1px solid #555;
-  border-left: none;
-  background-color: #61dafb;
-  color: #282c34;
+  border: none;
+  background-color: #3a3f47;
+  color: white;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
 }
