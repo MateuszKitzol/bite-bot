@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-header {
@@ -37,7 +37,7 @@
   margin-bottom: 5px; /* Space between messages */
   padding: 5px 12px; /* Padding for the message bubble */
   border-radius: 8px;
-  max-width: 70%; /* Limit message width */
+  max-width: 90%; /* Limit message width */
 }
 
 .user-message {
