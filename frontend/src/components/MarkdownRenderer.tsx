@@ -8,3 +8,4 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
 });
 
 export default MarkdownRenderer;
+

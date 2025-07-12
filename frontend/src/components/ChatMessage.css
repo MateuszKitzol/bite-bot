@@ -44,6 +44,7 @@
   padding: 0.5rem 0.75rem;
   background-color: #3a3f47;
   color: white;
+  cursor: pointer;
 }
 
 .generation-steps-content {
