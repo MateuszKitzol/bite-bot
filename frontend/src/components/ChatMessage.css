@@ -1,0 +1,113 @@
+.message-container {
+  margin-bottom: 5px; /* Space between messages */
+  padding: 5px 12px; /* Padding for the message bubble */
+  border-radius: 8px;
+  max-width: 90%; /* Limit message width */
+}
+
+.user-message {
+  background-color: #3a3f47; /* User message background */
+  align-self: flex-end; /* Aligns the entire message bubble to the right */
+  border-radius: 15px; /* Increased border radius */
+}
+
+.bot-message {
+  background-color: #282c34; /* Bot message background (same as chat history) */
+  align-self: flex-start; /* Keeps the entire message bubble to the left */
+}
+
+.generation-steps-container {
+  border: 1px solid #4a4a4a;
+  border-radius: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.generation-steps-button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.steps-toggle-button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #4a4a4a;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #3a3f47;
+  color: white;
+}
+
+.generation-steps-content {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.generation-steps-line-container {
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.generation-steps-pulse-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  transition-property: background-color;
+  border-radius: 9999px;
+}
+
+.generation-steps-pulse-dot.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #34d399;
+}
+
+.generation-steps-pulse-dot.bg-gray-500 {
+  background-color: #6b7280;
+}
+
+.generation-steps-vertical-line {
+  width: 1px;
+  flex-grow: 1;
+  border-left: 1px solid #4a4a4a;
+}
+
+.generation-steps-item-container {
+  space-y: 0.625rem;
+}
+
+.generation-steps-tool-results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.generation-steps-tool-item {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.375rem;
+  background-color: #1f2937;
+  border-radius: 0.25rem;
+  color: white;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}

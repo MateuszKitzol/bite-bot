@@ -33,23 +33,7 @@
   max-width: 100%; /* Allow text to take full width of message container */
 }
 
-.message-container {
-  margin-bottom: 5px; /* Space between messages */
-  padding: 5px 12px; /* Padding for the message bubble */
-  border-radius: 8px;
-  max-width: 90%; /* Limit message width */
-}
 
-.user-message {
-  background-color: #3a3f47; /* User message background */
-  align-self: flex-end; /* Aligns the entire message bubble to the right */
-  border-radius: 15px; /* Increased border radius */
-}
-
-.bot-message {
-  background-color: #282c34; /* Bot message background (same as chat history) */
-  align-self: flex-start; /* Keeps the entire message bubble to the left */
-}
 
 .chat-input {
   display: flex;
