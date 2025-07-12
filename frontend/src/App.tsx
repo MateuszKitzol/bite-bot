@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
+import ChatInput from './components/ChatInput';
+import ChatMessage from './components/ChatMessage';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -34,25 +36,10 @@ function App() {
         <h1>Chatbot</h1>
         <div className="chat-history" ref={chatHistoryRef}>
           {chatHistory.map((chat, index) => (
-            <React.Fragment key={index}>
-              <div className="message-container user-message">
-                <p>{chat.user}</p>
-              </div>
-              <div className="message-container bot-message">
-                <p>{chat.bot}</p>
-              </div>
-            </React.Fragment>
+            <ChatMessage key={index} chat={chat} />
           ))}
         </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          />
-          <button onClick={sendMessage}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
-        </div>
+        <ChatInput message={message} setMessage={setMessage} sendMessage={sendMessage} />
       </header>
     </div>
   );
