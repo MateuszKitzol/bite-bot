@@ -3,7 +3,13 @@ import aiohttp
 from bs4 import BeautifulSoup
 from datetime import datetime
 from langchain_core.tools import tool
+from pydantic import SecretStr
+from dotenv import load_dotenv
 
+# Correctly load the .env file from the backend directory
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
+
+USDA_API_KEY = SecretStr(os.environ["USDA_API_KEY"])
 
 @tool
 async def add(x: float, y: float) -> float:
@@ -46,7 +52,7 @@ async def teleman_movies_today() -> list[dict]:
                     style = channel_figure['style']
                     # Extract URL from style and then filename
                     import re
-                    match = re.search(r'''url\((.*?)\)''', style)
+                    match = re.search(r'url\((.*?)\)', style)
                     if match:
                         img_url = match.group(1)
                         channel_name = os.path.splitext(os.path.basename(img_url))[0]
@@ -59,3 +65,21 @@ async def teleman_movies_today() -> list[dict]:
                         "channel": channel_name
                     })
     return movies_today
+
+@tool
+async def get_food_nutrients(query: str) -> list[dict]:
+    """
+    Searches for a food item and returns its nutritional information.
+    """
+    api_key = USDA_API_KEY.get_secret_value()
+    url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}"
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            response.raise_for_status()
+            data = await response.json()
+
+    if data.get("foods"):
+        # Return nutrients of the first food item
+        return data["foods"][0].get("foodNutrients", [])
+    return []
