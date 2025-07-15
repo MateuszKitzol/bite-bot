@@ -1,5 +1,6 @@
 import os
 import aiohttp
+import asyncio
 from bs4 import BeautifulSoup
 from datetime import datetime
 from langchain_core.tools import tool
@@ -67,19 +68,42 @@ async def teleman_movies_today() -> list[dict]:
     return movies_today
 
 @tool
-async def get_food_nutrients(query: str) -> list[dict]:
+async def get_food_nutrients(ingredients: list[str]) -> dict[str, list[dict]]:
     """
-    Searches for a food item and returns its nutritional information.
+    Searches for a list of food items and returns their nutritional information.
+    It prioritizes the 'Foundation' dataType for the search.
+    Returns a dictionary where keys are the ingredients and values are their nutritional information.
     """
     api_key = USDA_API_KEY.get_secret_value()
-    url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={query}"
+    results = {}
+
+    async def fetch_nutrient(session, ingredient):
+        # First, try to find the ingredient with 'Foundation' dataType
+        url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={ingredient}&dataType=Foundation"
+        try:
+            async with session.get(url) as response:
+                response.raise_for_status()
+                data = await response.json()
+                if data.get("foods"):
+                    return {ingredient: data["foods"][0].get("foodNutrients", [])}
+
+            # If no 'Foundation' food is found, search without the dataType parameter
+            url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={ingredient}"
+            async with session.get(url) as response:
+                response.raise_for_status()
+                data = await response.json()
+                if data.get("foods"):
+                    return {ingredient: data["foods"][0].get("foodNutrients", [])}
+
+            return {ingredient: []}
+        except aiohttp.ClientError as e:
+            return {ingredient: f"Error fetching data: {e}"}
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            response.raise_for_status()
-            data = await response.json()
+        tasks = [fetch_nutrient(session, ingredient) for ingredient in ingredients]
+        nutrient_results = await asyncio.gather(*tasks)
 
-    if data.get("foods"):
-        # Return nutrients of the first food item
-        return data["foods"][0].get("foodNutrients", [])
-    return []
+    for res in nutrient_results:
+        results.update(res)
+
+    return results
