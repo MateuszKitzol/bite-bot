@@ -67,10 +67,28 @@ async def teleman_movies_today() -> list[dict]:
                     })
     return movies_today
 
+async def _get_nutrient_details(session, api_key, ingredient, data_type=None):
+    search_url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={ingredient}"
+    if data_type:
+        search_url += f"&dataType={data_type}"
+
+    async with session.get(search_url) as response:
+        response.raise_for_status()
+        data = await response.json()
+        if data.get("foods"):
+            fdcId = data["foods"][0].get("fdcId")
+            if fdcId:
+                details_url = f"https://api.nal.usda.gov/fdc/v1/food/{fdcId}?api_key={api_key}&format=full"
+                async with session.get(details_url) as details_response:
+                    details_response.raise_for_status()
+                    details_data = await details_response.json()
+                    return details_data.get("foodNutrients", [])
+    return None
+
 @tool
 async def get_food_nutrients(ingredients: list[str]) -> dict[str, list[dict]]:
     """
-    Searches for a list of food items and returns their nutritional information.
+    Searches for a list of food items and returns their full nutritional information.
     It prioritizes the 'Foundation' dataType for the search.
     Returns a dictionary where keys are the ingredients and values are their nutritional information.
     """
@@ -78,24 +96,15 @@ async def get_food_nutrients(ingredients: list[str]) -> dict[str, list[dict]]:
     results = {}
 
     async def fetch_nutrient(session, ingredient):
-        # First, try to find the ingredient with 'Foundation' dataType
-        url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={ingredient}&dataType=Foundation"
         try:
-            async with session.get(url) as response:
-                response.raise_for_status()
-                data = await response.json()
-                if data.get("foods"):
-                    return {ingredient: data["foods"][0].get("foodNutrients", [])}
+            # First, try to find the ingredient with 'Foundation' dataType
+            nutrients = await _get_nutrient_details(session, api_key, ingredient, "Foundation")
 
             # If no 'Foundation' food is found, search without the dataType parameter
-            url = f"https://api.nal.usda.gov/fdc/v1/foods/search?api_key={api_key}&query={ingredient}"
-            async with session.get(url) as response:
-                response.raise_for_status()
-                data = await response.json()
-                if data.get("foods"):
-                    return {ingredient: data["foods"][0].get("foodNutrients", [])}
+            if nutrients is None:
+                nutrients = await _get_nutrient_details(session, api_key, ingredient)
 
-            return {ingredient: []}
+            return {ingredient: nutrients if nutrients is not None else []}
         except aiohttp.ClientError as e:
             return {ingredient: f"Error fetching data: {e}"}
 
