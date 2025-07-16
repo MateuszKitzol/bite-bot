@@ -64,3 +64,14 @@ async def invoke(message: ChatMessage):
             "Connection": "keep-alive",
         }
     )
+
+@app.get("/api/initial_history")
+async def get_initial_history():
+    # Convert BaseMessage objects to a serializable format
+    serializable_history = []
+    for msg in agent_executor.chat_history:
+        serializable_history.append({
+            "content": msg.content,
+            "type": msg.type  # e.g., "ai", "human"
+        })
+    return {"chat_history": serializable_history}

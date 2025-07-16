@@ -11,9 +11,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ output }) => {
   const detailsHidden = !!output.result?.answer;
   return (
     <React.Fragment>
-      <div className="message-container user-message">
-        <p>{output.question}</p>
-      </div>
+      {output.question && (
+        <div className="message-container user-message">
+          <p>{output.question}</p>
+        </div>
+      )}
       <div className="message-container bot-message">
         {output.steps.length > 0 && (
           <GenerationSteps steps={output.steps} done={detailsHidden} />

@@ -8,6 +8,35 @@ import { IncompleteJsonParser } from 'incomplete-json-parser';
 function App() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatOutput[]>([]);
+
+  useEffect(() => {
+    const fetchInitialHistory = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/initial_history`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const initialBotMessage = data.chat_history.find((msg: any) => msg.type === 'ai');
+        if (initialBotMessage) {
+          setChatHistory([
+            {
+              question: '',
+              steps: [],
+              result: {
+                answer: initialBotMessage.content,
+                tools_used: [],
+              },
+            },
+          ]);
+        }
+      } catch (error) {
+        console.error("Error fetching initial chat history:", error);
+      }
+    };
+
+    fetchInitialHistory();
+  }, []);
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 

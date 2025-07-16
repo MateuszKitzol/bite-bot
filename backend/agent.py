@@ -84,7 +84,9 @@ async def execute_tool(tool_call: AIMessage) -> ToolMessage:
 # Agent Executor
 class CustomAgentExecutor:
     def __init__(self, max_iterations: int = 20):
-        self.chat_history: list[BaseMessage] = []
+        self.chat_history: list[BaseMessage] = [
+            AIMessage(content="Please provide your age, sex, height, weight, health targets, and exercise level.")
+        ]
         self.max_iterations = max_iterations
         self.agent = (
             {
