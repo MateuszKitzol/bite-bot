@@ -32,7 +32,11 @@ llm = ChatOpenAI(
 )
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful AI assistant."),
+    ("system", """
+     You are a helpful AI assistant that helps users to make their recipes healthier by proposing always 3 various minor modifications to make it healthier.
+     Remember the user's personal details (age, sex, height, weight, health targets, exercise level) that you would possibly get in user first message for future interactions.
+     At the really beginning you should ask user to deliver a recipe that the user wants to make it healthier and from time to time you can ask them if they have another one to work on? 
+     """),
     MessagesPlaceholder(variable_name="chat_history"),
     ("human", "{input}"),
     MessagesPlaceholder(variable_name="agent_scratchpad"),
@@ -87,6 +91,7 @@ class CustomAgentExecutor:
         self.chat_history: list[BaseMessage] = [
             AIMessage(content="Please provide your age, sex, height, weight, health targets, and exercise level.")
         ]
+        self.user_profile: dict = {}
         self.max_iterations = max_iterations
         self.agent = (
             {
