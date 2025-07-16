@@ -78,7 +78,7 @@ async def _get_nutrient_details(session, api_key, ingredient, data_type=None):
         if data.get("foods"):
             fdcId = data["foods"][0].get("fdcId")
             if fdcId:
-                details_url = f"https://api.nal.usda.gov/fdc/v1/food/{fdcId}?api_key={api_key}&format=full"
+                details_url = f"https://api.nal.usda.gov/fdc/v1/food/{fdcId}?api_key={api_key}&format=abridged"
                 async with session.get(details_url) as details_response:
                     details_response.raise_for_status()
                     details_data = await details_response.json()

@@ -111,6 +111,19 @@ class CustomAgentExecutor:
         agent_scratchpad: list[AIMessage | ToolMessage] = []
         # streaming function
         async def stream(query: str) -> list[AIMessage]:
+            print(f"Query length: {len(query)}")
+            print(f"Chat history length: {len(self.chat_history)} messages")
+            for i, msg in enumerate(self.chat_history):
+                if hasattr(msg, 'content'):
+                    print(f"  Chat history message {i} content length: {len(msg.content)}")
+                elif hasattr(msg, 'tool_calls'):
+                    print(f"  Chat history message {i} tool_calls length: {len(str(msg.tool_calls))}")
+            print(f"Agent scratchpad length: {len(agent_scratchpad)} messages")
+            for i, msg in enumerate(agent_scratchpad):
+                if hasattr(msg, 'content'):
+                    print(f"  Agent scratchpad message {i} content length: {len(msg.content)}")
+                elif hasattr(msg, 'tool_calls'):
+                    print(f"  Agent scratchpad message {i} tool_calls length: {len(str(msg.tool_calls))}")
             response = self.agent.with_config(
                 callbacks=[streamer]
             )
