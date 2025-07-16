@@ -165,7 +165,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Chatbot</h1>
+        <h1>BiteBot</h1>
         <div className="chat-history" ref={chatHistoryRef}>
           {chatHistory.map((output, index) => (
             <ChatMessage key={index} output={output} />
