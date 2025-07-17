@@ -3,3 +3,4 @@ langchain
 python-dotenv
 beautifulsoup4
 aiohttp
+uvicorn[standard]
