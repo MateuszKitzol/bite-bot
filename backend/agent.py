@@ -9,7 +9,7 @@ from langchain_core.tools import tool
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain_core.messages import AIMessage, ToolMessage, BaseMessage, HumanMessage
 
-from backend.tools import add, final_answer, teleman_movies_today, get_food_nutrients, calculate_meal_nutrition
+from tools import add, final_answer, teleman_movies_today, get_food_nutrients, calculate_meal_nutrition
 
 # Correctly load the .env file from the backend directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
