@@ -18,7 +18,7 @@ app = FastAPI()
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allows the React frontend to connect
+    allow_origins=["http://localhost:3000", "https://bite-bot.onrender.com"],  # Allows the React frontend to connect
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
