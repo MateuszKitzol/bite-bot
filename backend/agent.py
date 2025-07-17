@@ -9,7 +9,7 @@ from langchain_core.tools import tool
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain_core.messages import AIMessage, ToolMessage, BaseMessage, HumanMessage
 
-from tools import add, final_answer, teleman_movies_today, get_food_nutrients, calculate_meal_nutrition
+from tools import final_answer, get_food_nutrients, calculate_meal_nutrition
 
 # Correctly load the .env file from the backend directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
@@ -42,7 +42,7 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-tools = [add, final_answer, teleman_movies_today, get_food_nutrients, calculate_meal_nutrition]
+tools = [final_answer, get_food_nutrients, calculate_meal_nutrition]
 # note when we have sync tools we use tool.func, when async we use tool.coroutine
 name2tool = {tool.name: tool.coroutine for tool in tools}
 
