@@ -3,12 +3,14 @@ import './App.css';
 import ChatInput from './components/ChatInput';
 import ChatMessage from './components/ChatMessage';
 import InfoButton from './components/InfoButton';
+import InfoPanel from './components/InfoPanel';
 import { ChatOutput, Step } from './types';
 import { IncompleteJsonParser } from 'incomplete-json-parser';
 
 function App() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatOutput[]>([]);
+  const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
 
   useEffect(() => {
     const fetchInitialHistory = async () => {
@@ -166,14 +168,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>BiteBot</h1>
-        <InfoButton />
-        <div className="chat-history" ref={chatHistoryRef}>
-          {chatHistory.map((output, index) => (
-            <ChatMessage key={index} output={output} />
-          ))}
+        <InfoButton onClick={() => setIsInfoPanelOpen(true)} />
+        {isInfoPanelOpen && <InfoPanel onClose={() => setIsInfoPanelOpen(false)} />}
+        <div className={`main-content ${isInfoPanelOpen ? 'shifted' : ''}`}>
+          <h1>BiteBot</h1>
+          <div className="chat-history" ref={chatHistoryRef}>
+            {chatHistory.map((output, index) => (
+              <ChatMessage key={index} output={output} />
+            ))}
+          </div>
+          <ChatInput message={message} setMessage={setMessage} sendMessage={sendMessage} />
         </div>
-        <ChatInput message={message} setMessage={setMessage} sendMessage={sendMessage} />
       </header>
     </div>
   );

@@ -6,11 +6,31 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
+  flex-direction: row; /* Change to row to allow side-by-side layout */
+  align-items: stretch; /* Stretch items to fill the cross axis */
+  justify-content: center; /* Center content horizontally */
+  font-size: calc(10px + 2vmin);
+  color: white;
+  position: relative; /* Needed for absolute positioning of info-button and info-panel */
+}
+
+.main-content {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-grow: 1; /* Allow it to grow and take available space */
+  transition: margin-right 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition */
+  width: 100%; /* Default width */
+}
+
+.main-content h1 {
+  margin-top: 20px; /* Add some top margin to the h1 */
+}
+
+.main-content.shifted {
+  margin-right: 400px; /* Width of the info-panel */
+  width: calc(100% - 400px); /* Adjust width to account for the info-panel */
 }
 
 .chat-history {
@@ -68,6 +88,29 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.info-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #282c34;
+  border-left: 1px solid #3a3f47;
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
   background: none;
   border: none;
   color: white;
