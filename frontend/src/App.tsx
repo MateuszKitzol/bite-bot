@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const fetchInitialHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/initial_history`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/initial_history`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -60,7 +60,7 @@ function App() {
     setIsGenerating(true);
 
     try {
-      const res = await fetch(`http://localhost:8000/api/chat`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
