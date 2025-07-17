@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 import ChatInput from './components/ChatInput';
 import ChatMessage from './components/ChatMessage';
+import InfoButton from './components/InfoButton';
 import { ChatOutput, Step } from './types';
 import { IncompleteJsonParser } from 'incomplete-json-parser';
 
@@ -166,6 +167,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>BiteBot</h1>
+        <InfoButton />
         <div className="chat-history" ref={chatHistoryRef}>
           {chatHistory.map((output, index) => (
             <ChatMessage key={index} output={output} />

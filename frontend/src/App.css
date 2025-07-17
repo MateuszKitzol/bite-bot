@@ -64,6 +64,16 @@
   border-radius: 0 15px 15px 0;
 }
 
+.info-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
 /* WebKit (Chrome, Safari, Edge) scrollbar styling */
 .chat-history::-webkit-scrollbar {
   width: 8px;
