@@ -87,10 +87,7 @@ async def execute_tool(tool_call: AIMessage) -> ToolMessage:
     )
 
 # Agent Executor
-class CustomAgentExecutor:
-    def __init__(self, max_iterations: int = 20):
-        self.chat_history: list[BaseMessage] = [
-            AIMessage(content="""
+INITIAL_MESSAGE = AIMessage(content="""
 📝 This chat is designed to help you improve your recipes and make them healthier!
 
 🙋‍♂️ To personalize your experience, you can share a few optional details: 
@@ -100,9 +97,11 @@ Age, sex, height, weight, your health or fitness goals, and your activity level.
 to better understand your needs and optimize the model’s responses.
 
 🌱 Let's become healthier, one step at a time!
-"""
-            )
-        ]
+""")
+
+class CustomAgentExecutor:
+    def __init__(self, max_iterations: int = 20):
+        self.chat_history: list[BaseMessage] = [INITIAL_MESSAGE]
         self.user_profile: dict = {}
         self.max_iterations = max_iterations
         self.agent = (
@@ -116,20 +115,7 @@ to better understand your needs and optimize the model’s responses.
         )
 
     def reset(self):
-        self.chat_history = [
-            AIMessage(content="""
-📝 This chat is designed to help you improve your recipes and make them healthier!
-
-🙋‍♂️ To personalize your experience, you can share a few optional details: 
-Age, sex, height, weight, your health or fitness goals, and your activity level.
-
-🔒 This information won’t be stored in any database and is only used temporarily 
-to better understand your needs and optimize the model’s responses.
-
-🌱 Let's become healthier, one step at a time!
-"""
-            )
-        ]
+        self.chat_history = [INITIAL_MESSAGE]
         self.user_profile = {}
 
     async def invoke(self, input: str, streamer: QueueCallbackHandler, verbose: bool = False) -> dict:
