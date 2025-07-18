@@ -9,7 +9,7 @@ from langchain_core.tools import tool
 from langchain.callbacks.base import AsyncCallbackHandler
 from langchain_core.messages import AIMessage, ToolMessage, BaseMessage, HumanMessage
 
-from tools import final_answer, get_food_nutrients, calculate_meal_nutrition
+from tools import final_answer, get_food_nutrients
 
 # Correctly load the .env file from the backend directory
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
@@ -35,14 +35,15 @@ prompt = ChatPromptTemplate.from_messages([
     ("system", """
      You are a helpful AI assistant that helps users to make their recipes healthier by proposing always 3 various minor modifications to make it healthier.
      Remember the user's personal details (age, sex, height, weight, health targets, exercise level) that you would possibly get in user first message for future interactions.
-     At the really beginning you should ask user to deliver a recipe that the user wants to make it healthier and from time to time you can ask them if they have another one to work on? 
+     At the really beginning you should ask user to deliver a recipe that the user wants to make it healthier and from time to time you can ask them if they have another one to work on?
+     Please do not use the same tool more than 5 times in a row. That's really important. 
      """),
     MessagesPlaceholder(variable_name="chat_history"),
     ("human", "{input}"),
     MessagesPlaceholder(variable_name="agent_scratchpad"),
 ])
 
-tools = [final_answer, get_food_nutrients, calculate_meal_nutrition]
+tools = [final_answer, get_food_nutrients]
 # note when we have sync tools we use tool.func, when async we use tool.coroutine
 name2tool = {tool.name: tool.coroutine for tool in tools}
 
@@ -86,10 +87,7 @@ async def execute_tool(tool_call: AIMessage) -> ToolMessage:
     )
 
 # Agent Executor
-class CustomAgentExecutor:
-    def __init__(self, max_iterations: int = 20):
-        self.chat_history: list[BaseMessage] = [
-            AIMessage(content="""
+INITIAL_MESSAGE = AIMessage(content="""
 📝 This chat is designed to help you improve your recipes and make them healthier!
 
 🙋‍♂️ To personalize your experience, you can share a few optional details: 
@@ -99,9 +97,11 @@ Age, sex, height, weight, your health or fitness goals, and your activity level.
 to better understand your needs and optimize the model’s responses.
 
 🌱 Let's become healthier, one step at a time!
-"""
-            )
-        ]
+""")
+
+class CustomAgentExecutor:
+    def __init__(self, max_iterations: int = 20):
+        self.chat_history: list[BaseMessage] = [INITIAL_MESSAGE]
         self.user_profile: dict = {}
         self.max_iterations = max_iterations
         self.agent = (
@@ -113,6 +113,10 @@ to better understand your needs and optimize the model’s responses.
             | prompt
             | llm.bind_tools(tools, tool_choice="any")
         )
+
+    def reset(self):
+        self.chat_history = [INITIAL_MESSAGE]
+        self.user_profile = {}
 
     async def invoke(self, input: str, streamer: QueueCallbackHandler, verbose: bool = False) -> dict:
         # invoke the agent but we do this iteratively in a loop until

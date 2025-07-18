@@ -75,3 +75,8 @@ async def get_initial_history():
             "type": msg.type  # e.g., "ai", "human"
         })
     return {"chat_history": serializable_history}
+
+@app.post("/api/new_conversation")
+async def new_conversation():
+    agent_executor.reset()
+    return {"status": "ok"}

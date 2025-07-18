@@ -13,6 +13,16 @@ function App() {
   const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
 
   useEffect(() => {
+    const startNewConversation = async () => {
+      try {
+        await fetch(`${process.env.REACT_APP_API_URL}/api/new_conversation`, {
+          method: 'POST',
+        });
+      } catch (error) {
+        console.error("Error starting a new conversation:", error);
+      }
+    };
+
     const fetchInitialHistory = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/api/initial_history`);
@@ -38,7 +48,7 @@ function App() {
       }
     };
 
-    fetchInitialHistory();
+    startNewConversation().then(() => fetchInitialHistory());
   }, []);
   const chatHistoryRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
