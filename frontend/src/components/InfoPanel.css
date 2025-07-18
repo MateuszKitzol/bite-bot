@@ -1,0 +1,72 @@
+.info-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #282c34;
+  border-left: 1px solid #3a3f47;
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-panel .info-content {
+  font-size: 0.8em; /* Increased font size */
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-top: 20px; /* Add padding to account for close button */
+  padding-right: 15px; /* Add space between text and scrollbar */
+}
+
+/* WebKit (Chrome, Safari, Edge) scrollbar styling */
+.info-panel .info-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.info-panel .info-content::-webkit-scrollbar-track {
+  background: #282c34; /* Same as header background */
+}
+
+.info-panel .info-content::-webkit-scrollbar-thumb {
+  background-color: #555; /* Darker gray, similar to border */
+  border-radius: 4px;
+  border: 2px solid #282c34; /* Border to match track background */
+}
+
+/* Firefox scrollbar styling */
+.info-panel .info-content {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: #555 #282c34; /* thumb color track color */
+}
+
+.info-panel p {
+  font-size: 0.8em; /* Increased paragraph font size */
+}
+
+.info-panel ul,
+.info-panel li {
+  font-size: 0.8em; /* Increased list item font size */
+}
+
+.info-panel h2 {
+  font-size: 1.1em; /* Increased heading size */
+}
+
+.info-panel h3 {
+  font-size: 1em; /* Increased heading size */
+}
+
+.info-panel h4 {
+  font-size: 0.9em; /* Increased heading size */
+}
+
+.info-panel ul {
+  padding-left: 20px;
+}
+
+.info-panel li {
+  margin-bottom: 5px;
+}
