@@ -115,6 +115,23 @@ to better understand your needs and optimize the model’s responses.
             | llm.bind_tools(tools, tool_choice="any")
         )
 
+    def reset(self):
+        self.chat_history = [
+            AIMessage(content="""
+📝 This chat is designed to help you improve your recipes and make them healthier!
+
+🙋‍♂️ To personalize your experience, you can share a few optional details: 
+Age, sex, height, weight, your health or fitness goals, and your activity level.
+
+🔒 This information won’t be stored in any database and is only used temporarily 
+to better understand your needs and optimize the model’s responses.
+
+🌱 Let's become healthier, one step at a time!
+"""
+            )
+        ]
+        self.user_profile = {}
+
     async def invoke(self, input: str, streamer: QueueCallbackHandler, verbose: bool = False) -> dict:
         # invoke the agent but we do this iteratively in a loop until
         # reaching a final answer
