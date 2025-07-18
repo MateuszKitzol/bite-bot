@@ -66,32 +66,3 @@ async def get_food_nutrients(ingredients: list[str]) -> dict[str, list[dict]]:
         results.update(res)
 
     return results
-
-@tool
-async def calculate_meal_nutrition(ingredients_nutrition: dict[str, list[dict]], amounts: dict[str, float]) -> dict[str, dict[str, float | str]]:
-    """
-    Calculates the total nutritional value of a meal based on a list of ingredients and their amounts.
-    The amounts are in grams.
-    """
-    total_nutrition = {}
-
-    for ingredient, nutrients in ingredients_nutrition.items():
-        amount_in_grams = amounts.get(ingredient, 0)
-        if not nutrients or amount_in_grams == 0:
-            continue
-
-        for nutrient in nutrients:
-            nutrient_name = nutrient.get("name")
-            nutrient_amount = nutrient.get("amount", 0)
-            nutrient_unit = nutrient.get("unitName", "g")
-
-            # Assuming the nutrient amount is per 100g
-            amount_per_gram = nutrient_amount / 100
-            total_amount = amount_per_gram * amount_in_grams
-
-            if nutrient_name in total_nutrition:
-                total_nutrition[nutrient_name]["amount"] += total_amount
-            else:
-                total_nutrition[nutrient_name] = {"amount": total_amount, "unit": nutrient_unit}
-
-    return total_nutrition
